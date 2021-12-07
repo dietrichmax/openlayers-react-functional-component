@@ -1,25 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect, useRef } from 'react';
+import { Map, View } from 'ol';
+import TileLayer from 'ol/layer/Tile';
+import OSM from 'ol/source/OSM';
+import 'ol/ol.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [map, setMap] = useState();
+    const mapElement = useRef();
+    const mapRef = useRef();
+    mapRef.current = map;
+
+    useEffect(() => {
+        const initialMap = new Map({
+          target: mapElement.current,
+            layers: [
+                new TileLayer({
+                    source: new OSM(),
+                }),
+            ],
+            view: new View({
+                center: [0, 0],
+                zoom: 0,
+            }),
+        });
+        setMap(initialMap);
+    }, []);
+
+    return (
+      <div style={{height:'100vh',width:'100%'}} ref={mapElement} className="map-container" />
+    );
 }
 
 export default App;
