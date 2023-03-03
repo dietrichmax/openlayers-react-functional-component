@@ -15,7 +15,6 @@ function App() {
         source: new OSM(),
     })
     
-
     const initialMap = new Map({
         target: mapElement.current,
         layers: [osmLayer],
