@@ -10,19 +10,22 @@ function App() {
     const mapRef = useRef();
     mapRef.current = map;
 
+    const osmLayer = new TileLayer({
+        preload: Infinity,
+        source: new OSM(),
+    })
+    
+
+    const initialMap = new Map({
+        target: mapElement.current,
+        layers: [osmLayer],
+        view: new View({
+            center: [0, 0],
+            zoom: 0,
+          }),
+      });
+
     useEffect(() => {
-        const initialMap = new Map({
-          target: mapElement.current,
-            layers: [
-                new TileLayer({
-                    source: new OSM(),
-                }),
-            ],
-            view: new View({
-                center: [0, 0],
-                zoom: 0,
-            }),
-        });
         setMap(initialMap);
     }, []);
 
