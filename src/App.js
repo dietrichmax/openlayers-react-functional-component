@@ -5,15 +5,10 @@ import OSM from 'ol/source/OSM';
 import 'ol/ol.css';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
-import Style from 'ol/style/Style';
 import Point from 'ol/geom/Point';
-import {fromLonLat} from 'ol/proj';
 
 function App() {
-    const [map, setMap] = useState();
     const mapElement = useRef();
-    const mapRef = useRef();
-    mapRef.current = map;
 
     const osmLayer = new TileLayer({
         preload: Infinity,
@@ -35,19 +30,17 @@ function App() {
     const vectorLayer = new VectorLayer({
         source: vectorSource,
     })
-        
-    const initialMap = new Map({
-        target: mapElement.current,
-        layers: [osmLayer, vectorLayer],
-        view: new View({
-            center: [0, 0],
-            zoom: 0,
-          }),
-      });
-
 
     useEffect(() => {
-        setMap(initialMap);
+        const map = new Map({
+            target: mapRef.current,
+            layers: [osmLayer, vectorLayer],
+            view: new View({
+              center: [0, 0],
+              zoom: 0,
+            }),
+          })
+          return () => map.setTarget(null)
     }, []);
 
 
